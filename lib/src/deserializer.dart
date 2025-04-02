@@ -165,8 +165,7 @@ class Deserializer {
   }
 
   Uint8List _readBuffer(int length) {
-    final res =
-        Uint8List.view(_list.buffer, _list.offsetInBytes + _offset, length);
+    final res = Uint8List.view(_list.buffer, _list.offsetInBytes + _offset, length);
     _offset += length;
     return copyBinaryData ? Uint8List.fromList(res) : res;
   }
@@ -176,7 +175,10 @@ class Deserializer {
     final len = list.length;
     for (int i = 0; i < len; ++i) {
       if (list[i] > 127) {
-        return codec.decode(list);
+        return codec.decode(
+          list,
+          allowMalformed: true,
+        );
       }
     }
     return String.fromCharCodes(list);
